@@ -61,6 +61,10 @@ class BurgerBuilder extends React.Component {
       this.setState({orderButtonWasClicked: true});
    }
 
+   orderCancelHandler = () => {
+      this.setState({orderButtonWasClicked: false});
+   }
+
    render() {
       const lessButtonShouldBeDisabled = {...this.state.ingredients};
       for (let key in lessButtonShouldBeDisabled) {
@@ -69,7 +73,9 @@ class BurgerBuilder extends React.Component {
 
       return (
          <Aux>
-            <Modal show={this.state.orderButtonWasClicked}>
+            <Modal 
+               show={this.state.orderButtonWasClicked} 
+               modalClosed={this.orderCancelHandler}>
                <OrderSummary ingredients={this.state.ingredients} />
             </Modal>
             <Burger ingredients={this.state.ingredients} />
