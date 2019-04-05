@@ -4,22 +4,30 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 const INGREDIENT_PRICES = {
-   salad: 0.5,
+   salad: 0.3,
    cheese: 0.4,
-   meat: 1.5,
-   bacon: 0.7
+   meat: 1,
+   bacon: 0.6
 }
 
 class BurgerBuilder extends React.Component {
    state = {
       ingredients: {
          salad: 0,
-         bacon: 1,
-         cheese: 1,
+         bacon: 0,
+         cheese: 0,
          meat: 0
       },
-      totalPrice: 2
+      totalPrice: 1.5,
+      canOrder: false
    };
+
+   updateCanOrder(ingredients) {
+      const canOrder = Boolean(Object.values(ingredients)
+         .reduce((acc, curr) => acc + curr, 0));
+
+      this.setState({canOrder: canOrder});
+   }
 
    addIngredientHandler = type => {
       const updatedCount = this.state.ingredients[type] + 1;
@@ -29,6 +37,7 @@ class BurgerBuilder extends React.Component {
       updatedIngredients[type] = updatedCount;
       const updatedPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
       this.setState({totalPrice: updatedPrice, ingredients: updatedIngredients});
+      this.updateCanOrder(updatedIngredients);
    }
 
    removeIngredientHandler = type => {
@@ -42,6 +51,7 @@ class BurgerBuilder extends React.Component {
       updatedIngredients[type] = updatedCount;
       const updatedPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
       this.setState({totalPrice: updatedPrice, ingredients: updatedIngredients});
+      this.updateCanOrder(updatedIngredients);
    }
 
    render() {
@@ -54,9 +64,11 @@ class BurgerBuilder extends React.Component {
          <Aux>
             <Burger ingredients={this.state.ingredients} />
             <BuildControls
+               price={this.state.totalPrice}
                addedIngredient={this.addIngredientHandler}
                removedIngredient={this.removeIngredientHandler}
-               isDisabled={lessButtonShouldBeDisabled} />
+               isDisabled={lessButtonShouldBeDisabled}
+               canOrder={this.state.canOrder} />
          </Aux>
       );
    }
