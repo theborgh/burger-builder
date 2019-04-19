@@ -18,7 +18,8 @@ class ContactData extends Component {
             validation: {
                required: true,
             },
-            valid: false
+            valid: false,
+            touched: false
          },
 
          street: {
@@ -31,7 +32,8 @@ class ContactData extends Component {
             validation: {
                required: true,
             },
-            valid: false
+            valid: false,
+            touched: false
          },
 
          zipCode: {
@@ -46,7 +48,8 @@ class ContactData extends Component {
                minLength: 5,
                maxLength: 5
             },
-            valid: false
+            valid: false,
+            touched: false
          },
          
          country: {
@@ -59,7 +62,8 @@ class ContactData extends Component {
             validation: {
                required: true,
             },
-            valid: false
+            valid: false,
+            touched: false
          },
 
          email: {
@@ -72,7 +76,8 @@ class ContactData extends Component {
             validation: {
                required: true,
             },
-            valid: false
+            valid: false,
+            touched: false
           },
          
          deliveryMethod: {
@@ -140,6 +145,7 @@ class ContactData extends Component {
       };
       updatedFormElement.value = evt.target.value;
       updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+      updatedFormElement.touched = true;
       updatedOrderForm[inputId] = updatedFormElement;
       this.setState({orderForm: updatedOrderForm});
    }
@@ -161,6 +167,9 @@ class ContactData extends Component {
                   elementType={formEl.config.elementType}
                   elementConfig={formEl.config.elementConfig}
                   value={formEl.config.value}
+                  invalid={!formEl.config.valid}
+                  shouldValidate={formEl.config.validation}
+                  touched={formEl.config.touched}
                   changed={(evt) => this.inputChangedHandler(evt, formEl.id)} />
             ))}
             <Button buttonType="Success">Order</Button>
