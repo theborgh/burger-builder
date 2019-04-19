@@ -86,6 +86,18 @@ class ContactData extends Component {
          });
    }
 
+   inputChangedHandler = (evt, inputId) => {
+      const updatedOrderForm = {
+         ...this.state.orderForm
+      };
+      const updatedFormElement = {
+         ...updatedOrderForm[inputId]
+      };
+      updatedFormElement.value = evt.target.value;
+      updatedOrderForm[inputId] = updatedFormElement;
+      this.setState({orderForm: updatedOrderForm});
+   }
+
    render() {
       const formElements = [];
       for (let key in this.state.orderForm) {
@@ -102,7 +114,8 @@ class ContactData extends Component {
                   key={formEl.id}
                   elementType={formEl.config.elementType}
                   elementConfig={formEl.config.elementConfig}
-                  value={formEl.config.value} />
+                  value={formEl.config.value}
+                  changed={(evt) => this.inputChangedHandler(evt, formEl.id)} />
             ))}
             <Button buttonType="Success" clicked={this.orderHandler}>Order</Button>
          </form>);
